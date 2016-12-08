@@ -16,25 +16,25 @@ install.minimaltd.rootfs = /var/lib/ethos/minimaltd/rootfs
 
 
 .PHONY: all install
-all: Box
+all: MyTime
 
-install: Box
-	ethosTypeInstall $(install.rootfs) $(install.minimaltd.rootfs) BoxType
-	install Box $(install.rootfs)/programs
-	install Box $(install.minimaltd.rootfs)/programs
-	echo -n /programs/Box | ethosStringEncode > $(install.rootfs)/etc/init/console
+install: MyTime
+	ethosTypeInstall $(install.rootfs) $(install.minimaltd.rootfs) TimeType
+	install MyTime $(install.rootfs)/programs
+	install MyTime $(install.minimaltd.rootfs)/programs
+	echo -n /programs/MyTime | ethosStringEncode > $(install.rootfs)/etc/init/console
 	mkdir -p $(install.rootfs)/user/nobody/myDir
-	setfattr -n user.ethos.typeHash -v $(shell egPrint BoxType hash MyBox) $(install.rootfs)/user/nobody/myDir
+	setfattr -n user.ethos.typeHash -v $(shell egPrint TimeType hash MyTime) $(install.rootfs)/user/nobody/myDir
 	
 
-BoxType.go: BoxType.t
-	$(ETN2GO) . BoxType main $^
+TimeType.go: TimeType.t
+	$(ETN2GO) . TimeType main $^
 
-Box: Box.go BoxType.go
+MyTime: MyTime.go TimeType.go
 	ethosGo $^ 
 
 clean:
-	rm -rf BoxType/ BoxTypeIndex/
-	rm -f BoxType.go
-	rm -f Box
-	rm -f Box.goo.ethos
+	rm -rf TimeType/ TimeTypeIndex/
+	rm -f TimeType.go
+	rm -f MyTime
+	rm -f MyTime.goo.ethos
